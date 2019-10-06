@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>View Cars</title>
+        <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous">
+    </head>
+    <body>
+        <h1> Cars </h1></br>
+
+        <div> 
+                <button type="button" class="btn btn-dark">Create</button>
+        </div></br>
+
+        <h2>All Cars</h2>
+
+        <div>
+            <table class="table table-striped table-dark table-bordered">
+                <tr>
+                    <th scope="col">Reg</th>
+                    <th scope="col">Make</th>
+                    <th scope="col">Model</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Update</th>
+                    <th scope="col">Delete</th>            
+                </tr>
+
+                <tr>
+                    <td scope="row">191 MO 123</td>
+                    <td>Ford</td>
+                    <td>Mondeo</td>
+                    <td>25,000</td>
+                    <td><button>Update</button></td>
+                    <td><button>Delete</button></td>
+                </tr>
+                <tr>
+                    <td scope="row">12 D 123</td>
+                    <td>Fiat</td>
+                    <td>Punto</td>
+                    <td>4,000</td>
+                    <td><button>Update</button></td>
+                    <td><button>Delete</button></td>
+                </tr>
+                <tr>
+                    <td scope="row">08 G 123</td>
+                    <td>Nissan</td>
+                    <td>Almera</td>
+                    <td>500</td>
+                    <td><button>Update</button></td>
+                    <td><button>Delete</button></td>
+                </tr>
+            </table>
+        </div>
+
+        <h2><span>Create an</span> <span>Update for this</span> Car</h2>
+
+        <form>
+        <div>
+            Reg <input type="text" placeholder="Reg" name="reg" class="form-control form-control-lg form-control-sm"><br/>
+            Make <select name="make" class="form-control form-control-lg form-control-sm">
+                    <option value="Ford">Ford</option>
+                    <option value="Fiat">Fiat</option>
+                    <option value="Nissan">Nissan</option>
+                </select><br/>
+            Model <input type="text" placeholder="Model" name="model" class="form-control form-control-lg form-control-sm"><br/>
+            Price <input type="number" placeholder="Price" name="price" class="form-control form-control-lg form-control-sm"><br/>
+             
+            <span><button type="button" class="btn btn-dark">Create</button></span>
+            <span><button type="button" class="btn btn-dark">Update</button></span>
+
+        </div>
+        </form>
+    </body>
+    </html>
