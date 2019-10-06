@@ -1,0 +1,37 @@
+<!--
+Excercise 1.1 Create an XML Assignment Instructions-
+
+Create an XML file that stores data for a library. 
+The library has two catalogues (technical books, and for cookery books).
+Each catalogue can contain a number of books (say 2 for the purpose of this exercise) . 
+Books will have an ISBN, title and author. 
+
+Assignment given by Andrew Beatty GMIT 2019 Data Representation Model
+
+Shauna Byrne
+-->
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Library>
+<Book category="Technical">
+    <ISBN>088177850848</ISBN>
+    <Title>Technical Coding 101</Title>
+    <Author>Ben Ebbrell</Author>
+</Book>
+<Book category="Technical">
+    <ISBN>098127840568</ISBN>
+    <Title>Technical Coding 102</Title>
+    <Author>Ben Ebbrell</Author>
+</Book>
+<Book category="Cookery">
+    <ISBN>0955940818128</ISBN>
+    <Title>Cookery 101</Title>
+    <Author>Shauna Byrne</Author>
+</Book>
+<Book category="Cookery">
+    <ISBN>0675440212168</ISBN>
+    <Title>Cookery 102</Title>
+    <Author>Shauna Byrne</Author>
+</Book>
+</Library>
