@@ -126,15 +126,21 @@
 
     }
 
-    function clearForm(){
-        var form = document.getElementById('createUpdateForm')
+    function doUpdate(){
+        var car = getCarFromForm();
+        var rowElement = document.getElementById(car.reg)
+        setCarInRow(rowElement, car)
 
-        form.querySelector('input[name="reg"]').disabled = false
-        form.querySelector('input[name="reg"]').value = ''
-        form.querySelector('input[name="make"]').value = ''
-        form.querySelector('input[name="model"]').value = ''
-        form.querySelector('input[name="price"]').value = ''
+        clearForm()
+        showViewAll()
+    
+    }
 
+    function doDelete(r){
+        var tableElement = document.getElementById('carTable')
+        var index = r.parentNode.parentNode.rowIndex;
+        tableElement.deleteRow(index);
+    
     }
 
     function addCarToTable(car){
@@ -156,8 +162,19 @@
     
     }
 
+    function clearForm(){
+        var form = document.getElementById('createUpdateForm')
+
+        form.querySelector('input[name="reg"]').disabled = false
+        form.querySelector('input[name="reg"]').value  =''
+        form.querySelector('select[name="make"]').value=''
+        form.querySelector('input[name="model"]').value=''
+        form.querySelector('input[name="price"]').value=''
+
+    }
+
     function getCarFromRow(rowElement){
-        var car = {}
+        var car ={}
         car.reg = rowElement.cells[0].firstChild.textContent
         car.make = rowElement.cells[1].firstChild.textContent
         car.model = rowElement.cells[2].firstChild.textContent
@@ -165,6 +182,15 @@
         return car
     
     }
+
+    function setCarInRow(rowElement, car){
+        rowElement.cells[0].firstChild.textContent = car.reg
+        rowElement.cells[1].firstChild.textContent = car.make
+        rowElement.cells[2].firstChild.textContent = car.model
+        rowElement.cells[3].firstChild.textContent = car.price
+    
+    }
+
 
     function populateFormWithCar(car){
         var form = document.getElementById('createUpdateForm')
@@ -190,30 +216,7 @@
     
     }
 
-    function setCarInRow(rowElement, car){
-        rowElement.cells[0].firstChild.textContent = car.reg
-        rowElement.cells[1].firstChild.textContent = car.make
-        rowElement.cells[2].firstChild.textContent = car.model
-        rowElement.cells[3].firstChild.textContent = car.price
     
-    }
-
-    function doUpdate(){
-        var car = getCarFromForm();
-        var rowElement = document.getElementById(car.reg)
-        setCarInRow(rowElement, car)
-
-        clearForm()
-        showViewAll()
-    
-    }
-
-    function doDelete(r){
-        var tableElement = document.getElementById('carTable')
-        var index = r.parentNode.parentNode.rowIndex;
-        tableElement.deleteRow(index);
-    
-    }
 </script>
 
 </html>
