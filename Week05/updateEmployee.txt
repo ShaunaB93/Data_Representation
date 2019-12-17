@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Wrong request.</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" type="text/css">
+
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            color: #B0BEC5;
+            display: table;
+            font-weight: 100;
+            font-family: 'Lato', sans-serif;
+            font-size: 36px;
+        }
+
+        .container {
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        .content {
+            text-align: center;
+            display: inline-block;
+        }
+
+        .title {
+            font-size: 72px;
+            margin-bottom: 40px;
+        }
+
+        a {
+            color: #B0BEC5;
+            font-weight: 100;
+            font-family: 'Lato', sans-serif;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="content">
+        <div class="title">Wrong request.</div>
+                <p><a href="https://redcenter.nl">home</a></p>
+    </div>
+</div>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-3291718-4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'UA-3291718-4');
+    </script>
+
+
+</body>
+</html><!-- version 11aaeb1 -->
