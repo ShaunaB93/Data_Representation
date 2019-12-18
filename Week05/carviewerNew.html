@@ -113,6 +113,9 @@
     function doUpdate(){
         var car = getCarFromForm();
         var rowElement = document.getElementById(car.reg);
+
+        updateAJAX(car);
+
         setCarInRow(rowElement, car);
 
         clearForm();
@@ -122,8 +125,9 @@
 
     function doDelete(r){
         var tableElement = document.getElementById('carTable');
-        var index = r.parentNode.parentNode.rowIndex;
-        deleteAJAX(index.getAttribute("id"));
+        var rowElement = r.parentNode.parentNode;
+        var index = rowElement.rowIndex;
+        deleteAJAX(rowElement.getAttribute("id"));
         tableElement.deleteRow(index);
     
     }
@@ -267,8 +271,8 @@
                 "dataType": "JSON",
                 contentType: "application/json; charset=utf-8",
                 "success":function(result){
-                    console.log(result);
-                    document.getElementById("output").innerText = JSON.stringify(result);    
+                    //console.log(result);
+                    //document.getElementById("output").innerText = JSON.stringify(result);    
                 },
                 "error":function(xhr,status,error){
                     console.log("error: "+status+" msg:"+error);
