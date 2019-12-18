@@ -11,13 +11,24 @@ url= "https://reports.sem-o.com/api/v1/documents/static-reports?ReportName=Balan
 response = requests.get(url)
 data = response.json()
 
+totalPages = data["pagination"]["totalPages"]
+
 listOfReports = []
 # Output data to console
 for item in data["items"]:
     listOfReports.append(item["ResourceName"])
 
+pageNumber=1
+while pageNumber <= totalPages:
+    pageUrl = url + "&page="+ str(pageNumber)
+    data = requests.get(pageUrl).json()
+    for item in data["items"]:
+        listOfReports.append(item["ResourceName"])
+
+    pageNumber +=1
+
 w = Workbook()
-ws = w.add_sheet('items')
+ws = w.add_sheet("items")
 rowNumber = 0;
 ws.write(rowNumber,0,"StartTime")
 ws.write(rowNumber,1,"EndTime")
@@ -28,11 +39,24 @@ rowNumber += 1
 
 for ReportName in listOfReports:
     url ="https://reports.sem-o.com/api/v1/documents/"+ReportName
-    print(url)
+    #print(url)
     response= requests.get(url)
     aReport= response.json()
+    for row in aReport["rows"]:
+        #print (row)
+        ws.write(rowNumber,0,row["StartTime"])
+        ws.write(rowNumber,1,row["EndTime"])
+        if "ImbalanceVolume" in row:
+            ws.write(rowNumber,2,row["ImbalanceVolume"])
+        if "ImbalancePrice" in row:
+            ws.write(rowNumber,3,row["ImbalancePrice"])
+        if "ImbalanceCost" in row:
+            ws.write(rowNumber,4,row["ImbalanceCost"])
+        rowNumber += 1
 
 # Saves data to a file
-filename = 'reports2.json'
-f =  open(filename, 'w')
-json.dump(data, f, indent=4)
+#filename = 'reports2.json'
+#f =  open(filename, 'w')
+#json.dump(data, f, indent=4)
+
+w.save('final.xls')
