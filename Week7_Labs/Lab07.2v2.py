@@ -53,13 +53,21 @@ def main():
         messages.extend(response['messages'])
 
     for message in messages:
-        print(message['id'])
+        #print(message['id'])
+        CompleteMessage = service.users().messages().get(userId='me', id=message[0]['id']).execute()
+        print(CompleteMessage['snippet'])
 
-    CompleteMessage = service.users().messages().get(userId='me', id=messages[0]['id']).execute()
+        headers = CompleteMessage['payload']['headers']
+        subject = list(filter(lambda  h: h['name']=='Subject', headers))[0]['value']
+        receiver = list(filter(lambda  h: h['name']=='To', headers))[0]['value']
+        sender = list(filter(lambda  h: h['name']=='From', headers))[0]['value']
+        print(subject)
+        print(receiver)
+        print(sender)
 
-    print(CompleteMessage['snippet'])
-    with open('emails.json', 'w') as e:
-        json.dump(CompleteMessage, e, indent=4)
+
+    #with open('emails.json', 'w') as e:
+        #json.dump(CompleteMessage, e, indent=4)
 
 if __name__ == '__main__':
     main()
