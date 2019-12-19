@@ -65,6 +65,15 @@ def main():
         print(receiver)
         print(sender)
 
+        w = Workbook()
+        ws = w.add_sheet('emails')
+        row = 0
+        ws.write(row, 0, subject)
+        ws.write(row, 1, receiver)
+        ws.write(row, 2, sender)
+        row += 1
+        w.save('emails.xls')
+
 
     #with open('emails.json', 'w') as e:
         #json.dump(CompleteMessage, e, indent=4)
