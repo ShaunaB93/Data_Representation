@@ -6,19 +6,22 @@ films=[{
     "ID":1,
     "Title":"Harry Potter",
     "Rating":10,
-    "Director":"David Yates"
+    "Director":"David Yates",
+    "Votes":0
 },
 {
     "ID":2,
     "Title":"The Avengers",
     "Rating":9,
-    "Director":"Joss Whedon"
+    "Director":"Joss Whedon",
+    "Votes":0
 },
 {
     "ID":3,
     "Title":"Superman Returns",
     "Rating":5,
-    "Director":"Bryan Singer"
+    "Director":"Bryan Singer",
+    "Votes":0
 }]
 
 nextID=4
@@ -32,8 +35,8 @@ def getAll():
 def findID(id):
     filmCheck = list(filter(lambda f: f['ID']==id, films))
     if len(filmCheck)==0:
-        return jsonify({}), 204
-    #Figure out how to return 404 if ID not in list/database
+        abort(404)
+        #return jsonify({}), 204
     return jsonify(filmCheck[0])
 
 #curl "http://127.0.0.1:5000/films/3"
@@ -48,7 +51,8 @@ def createFilm():
         "ID":nextID,
         "Title": request.json['Title'],
         "Rating": request.json['Rating'],
-        "Director": request.json['Director']
+        "Director": request.json['Director'],
+        "Votes": 0
     }
     nextID += 1
     films.append(film)
@@ -95,11 +99,23 @@ def deleteFilm(id):
 
 @app.route('/votes/<int:id>', methods=['POST'])
 def addVote(id):
-    return "in add vote for film" + str(id)
+    foundFilm = list(filter(lambda f: f['ID']==id, films))
+    if len(foundFilm)==0:
+        abort(404)
+    if not request.json:
+        abort(400)
+    if not 'Votes' in request.json or type(request.json['Votes']) is not int:
+        abort(401)
+    updatedVote = request.json['Votes']
+
+    foundFilm[0]['Votes'] += updatedVote
+    
+    return jsonify(foundFilm[0])
 
 @app.route('/votes/leaderboard')
 def getLeaderBoard():
-    return "in get LeaderBoard"
+    films.sort(key=lambda f: f['Votes'], reverse=True)
+    return jsonify(films)
 
 if __name__ == '__main__':
     app.run(debug= True)
