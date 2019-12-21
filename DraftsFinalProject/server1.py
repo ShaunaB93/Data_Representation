@@ -1,4 +1,5 @@
-from flask import Flask, jsonify
+from flask import Flask
+from flask import jsonify
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
@@ -26,10 +27,15 @@ nextID=4
 @app.route('/films')
 def getAll():
     return jsonify(films)
+#curl "http://127.0.0.1:5000/films"
 
 @app.route('/films/<int:id>')
 def findID(id):
-    return "in find ID for id " +str(id)
+    filmCheck = list(filter(lambda f: f['ID']==id, films))
+    if len(filmCheck)==0:
+        return jsonify({}), 204
+    
+    return jsonify(filmCheck[0])
 
 @app.route('/films', methods=['POST'])
 def createFilm():
