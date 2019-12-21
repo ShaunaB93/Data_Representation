@@ -33,7 +33,7 @@ def findID(id):
     filmCheck = list(filter(lambda f: f['ID']==id, films))
     if len(filmCheck)==0:
         return jsonify({}), 204
-    
+    #Figure out how to return 404 if ID not in list/database
     return jsonify(filmCheck[0])
 
 #curl "http://127.0.0.1:5000/films/3"
@@ -92,6 +92,14 @@ def deleteFilm(id):
         abort(404)
     films.remove(deleteFilm[0])
     return jsonify({"done":True})
+
+@app.route('/votes/<int:id>', methods=['POST'])
+def addVote(id):
+    return "in add vote for film" + str(id)
+
+@app.route('/votes/leaderboard')
+def getLeaderBoard():
+    return "in get LeaderBoard"
 
 if __name__ == '__main__':
     app.run(debug= True)
