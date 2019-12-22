@@ -1,47 +1,44 @@
 from flask import Flask, jsonify, request, abort
-from filmDAO import filmDAO
+from studentDAO import StudentDAO
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
-#films=[{
-#    "ID":1,
-#    "Title":"Harry Potter",
-#    "Rating":10,
-#    "Director":"David Yates",
-#    "Votes":0
-#},
-#{
-#    "ID":2,
-#    "Title":"The Avengers",
-#    "Rating":9,
-#    "Director":"Joss Whedon",
-#    "Votes":0
-#},
-#{
-#    "ID":3,
-#    "Title":"Superman Returns",
-#    "Rating":5,
-#    "Director":"Bryan Singer",
-#    "Votes":0
-#}]
+films=[{
+    "ID":1,
+    "Title":"Harry Potter",
+    "Rating":10,
+    "Director":"David Yates",
+    "Votes":0
+},
+{
+    "ID":2,
+    "Title":"The Avengers",
+    "Rating":9,
+    "Director":"Joss Whedon",
+    "Votes":0
+},
+{
+    "ID":3,
+    "Title":"Superman Returns",
+    "Rating":5,
+    "Director":"Bryan Singer",
+    "Votes":0
+}]
 
-#nextID=4
+nextID=4
 
 @app.route('/films')
 def getAll():
-    filmResult = filmDAO.getAll()
-    return jsonify(filmResult)
+    return jsonify(films)
 #curl "http://127.0.0.1:5000/films"
 
 @app.route('/films/<int:id>')
 def findID(id):
-    #filmCheck = list(filter(lambda f: f['ID']==id, films))
-    #if len(filmCheck)==0:
-    #    abort(404)
+    filmCheck = list(filter(lambda f: f['ID']==id, films))
+    if len(filmCheck)==0:
+        abort(404)
         #return jsonify({}), 204
-    #return jsonify(filmCheck[0])
-    foundFilm = filmDAO.findByID(id)
-    return jsonify(foundFilm)
+    return jsonify(filmCheck[0])
 
 #curl "http://127.0.0.1:5000/films/3"
 
@@ -52,31 +49,23 @@ def createFilm():
         abort(400)
     #Check that properly formatted add code here
     film={
-        #"ID":nextID,
+        "ID":nextID,
         "Title": request.json['Title'],
         "Rating": request.json['Rating'],
         "Director": request.json['Director'],
         "Votes": 0
     }
-    #nextID += 1
-    #films.append(film)
-    
-    filmValue = (film['Title'], film['Rating'], film['Director'], film['Votes'])
-    updatedID = filmDAO.create(filmValue)
-    film['ID'] = updatedID
+    nextID += 1
+    films.append(film)
     return jsonify(film)
 #curl -i -H "Content-Type:application/json" -X POST -d "{\"Title\":\"King Kong\",\"Rating\":\"6\",\"Director\":\"Peter Jackson\"}" http://127.0.0.1:5000/films
 
 @app.route('/films/<int:id>', methods=['PUT'])
 def updateFilm(id):
-    #changeFilm = list(filter(lambda f: f['ID']==id, films))
-    changeFilm = filmDAO.findByID(id)
-    if not changeFilm:
+    changeFilm = list(filter(lambda f: f['ID']==id, films))
+    if (len(changeFilm) ==0):
         abort(404)
-    
-    #if (len(changeFilm) ==0):
-        #abort(404)
-    #changeFilm = changeFilm[0]
+    changeFilm = changeFilm[0]
     
     if not request.json:
         abort(400)
@@ -88,8 +77,6 @@ def updateFilm(id):
         abort(400)
     if 'Director' in requestJson and type(requestJson['Director']) is not str:
         abort(400)
-    if 'Votes' in requestJson and type(requestJson['Votes']) is not int:
-        abort(400)
     
     if 'Title' in requestJson:
         changeFilm['Title'] = requestJson['Title']
@@ -99,25 +86,17 @@ def updateFilm(id):
     
     if 'Director' in requestJson:
         changeFilm['Director'] = requestJson['Director']
-
-    if 'Votes' in requestJson:
-        changeFilm['Votes'] = requestJson['Votes']
     
-    filmValues = (changeFilm['Title'], changeFilm['Rating'], changeFilm['Director'], changeFilm['Votes'], changeFilm['ID'])
-    filmDAO.update(filmValues)
     return jsonify(changeFilm)
 #curl -i -H "Content-Type:application/json" -X PUT -d "{\"Title\":\"King Kong\",\"Director\":\"Peter Jackson\",\"Rating\":3}" http://127.0.0.1:5000/films/1
 
 @app.route('/films/<int:id>', methods=['DELETE'])
 def deleteFilm(id):
-    filmDAO.delete(id)
+    deleteFilm = list(filter(lambda f: f['ID']==id, films))
+    if (len(deleteFilm) ==0):
+        abort(404)
+    films.remove(deleteFilm[0])
     return jsonify({"done":True})
-
-    #deleteFilm = list(filter(lambda f: f['ID']==id, films))
-    #if (len(deleteFilm) ==0):
-    #    abort(404)
-    #films.remove(deleteFilm[0])
-    #return jsonify({"done":True})
 
 @app.route('/votes/<int:id>', methods=['POST'])
 def addVote(id):
