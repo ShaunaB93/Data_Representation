@@ -1,0 +1,58 @@
+<html lang="en">
+<head>
+
+<link rel="stylesheet" href="design2.css"></style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+</head>
+<body>
+	
+	<form id="login">
+		<div class="form">
+		<div class="login">
+		
+			<h1>Film Viewer<h1>
+			
+			<fieldset>
+				<legend> Login </legend>
+				
+				<p><input type="email" id="email" name="email" placeholder="Email" required /></>
+
+				<p><input type="password" id="pwd" name="pwd" placeholder="Password" required /></p>
+				
+				<p><input type="button" value="Login" onclick="validate()"/></p>
+			</fieldset>
+		</div>
+		</div>
+	</form>		
+	
+</body>
+
+<html>
+
+<script>
+
+	//Function to execute when submit is clicked
+	function validate(){ 
+		var email = document.getElementById("email").value;
+		var password = document.getElementById("pwd").value;
+		
+		
+		//Validates credentials against those stored
+		if ( email == "Andrew@gmit.ie" && password == "Password01!"){
+			alert("Login Successful")
+			
+		window.location.replace("IndexPage.html");
+		return false;
+	}
+	
+		//returns login failed if credentials don't match
+		else if ( email != "Andrew@gmit.ie" || pwd != "Password01"){
+			alert("Login Failed");
+		return false;
+
+	}
+	}
+
+</script>

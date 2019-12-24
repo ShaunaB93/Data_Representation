@@ -1,0 +1,5 @@
+Login Credentials for the login screen have been set to -
+Andrew@gmit.ie
+Password01
+
+Once server1 is running on the virtual machine with all the the requirements in requirements.txt installed. The initial weblink will appear @ http://127.0.0.1:5000/ and the application can be navigated through from this page and the buttons which also appear on the following pages.
