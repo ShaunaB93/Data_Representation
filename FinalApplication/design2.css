@@ -60,7 +60,7 @@ html {
   }
    
    /*Adds styles to each of the input options on the login screen */
-  input[type=username], input[type=password] {
+  input[type=email], input[type=password] {
     margin: 5px;
     padding: 0 10px;
     width: 250px;
