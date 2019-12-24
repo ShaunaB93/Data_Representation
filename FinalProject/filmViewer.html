@@ -1,0 +1,263 @@
+<html>
+    <head>
+        <title> Film Viewer </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+       
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <style>
+        body {
+			height:100%; 
+			background: linear-gradient(to bottom, #00dbde 0%, #fc00ff 100%);
+		}
+
+        </style>
+    </head>
+    <body>
+        <div class="title text-center"> 
+        <h1>Film Viewer</h1>
+        </div>
+    </br>
+        <div class="text-center"> <button id="showCreateButton" onclick="showCreate()" class="btn btn-dark text-center">Create</button></div>
+    </br>
+        <div>
+            <table class="table table-striped table-dark table-bordered" id="filmTable">
+                <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Rating</th>
+                        <th>Director</th>
+                        <th>Votes</th>
+                        <th>Update</th>
+                        <th>Delete</th>
+                </tr>
+                
+            </table>
+        </div>
+        <div id='createUpdateForm' style="display: none">
+                <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Film</h2>
+                <input type="hidden" name="ID"/>
+                Title <input type="text" name="Title" class="form-control form-control-lg form-control-sm"/>  <br/>
+                Rating <input type="number" name="Rating" class="form-control form-control-lg form-control-sm"/> <br/>
+                Director <input type="text" name="Director" class="form-control form-control-lg form-control-sm"/> <br/>
+                Votes <input type="number" name="Votes" class="form-control form-control-lg form-control-sm"/> <br/>
+                <span><button id="doCreateButton" onclick="doCreate()" class="btn btn-dark text-center">Create</button></span>
+                <span><button id="doUpdateButton" onclick="doUpdate()" class="btn btn-dark text-center">Update</button></span>
+        </div>
+
+        <div class="text-center"> 
+            <br> 
+			<input type="button" name="indexPage" value="Move to Index Page" onclick="window.location.href='IndexPage.html'" class="btn btn-dark text-center"/>
+			<div>
+			
+			</br> 
+			<input type="button" name="loginPage" value="Back to Login Page" onclick="window.location.href='LoginPage.html'" class="btn btn-dark text-center"/>
+			<div>
+		</div>
+    </body>
+    <script>
+    function showCreate(){
+        document.getElementById('showCreateButton').style.display="none"
+        document.getElementById('filmTable').style.display="none"
+        document.getElementById('createUpdateForm').style.display="block"
+
+        document.getElementById('createLabel').style.display="inline"
+        document.getElementById('updateLabel').style.display="none"
+
+        document.getElementById('doCreateButton').style.display="block"
+        document.getElementById('doUpdateButton').style.display="none"
+
+    }
+    function showViewAll(){
+        document.getElementById('showCreateButton').style.display="initial"
+        document.getElementById('filmTable').style.display="table"
+        document.getElementById('createUpdateForm').style.display="none"
+    }
+    function showUpdate(buttonElement){
+        document.getElementById('showCreateButton').style.display="none"
+        document.getElementById('filmTable').style.display="none"
+        document.getElementById('createUpdateForm').style.display="block"
+
+        document.getElementById('createLabel').style.display="none"
+        document.getElementById('updateLabel').style.display="inline"
+
+        document.getElementById('doCreateButton').style.display="none"
+        document.getElementById('doUpdateButton').style.display="block"
+
+
+        var rowElement = buttonElement.parentNode.parentNode
+        
+        var film = getFilmFromRow(rowElement)
+        populateFormWithFilm(film)
+    }
+    function doCreate(){
+        var form = document.getElementById('createUpdateForm')
+
+        var film = {}
+        film.Title = form.querySelector('input[name="Title"]').value
+        film.Rating = form.querySelector('input[name="Rating"]').value
+        film.Director = form.querySelector('input[name="Director"]').value
+        film.Votes = form.querySelector('input[name="Votes"]').value
+        console.log(JSON.stringify(film))
+        createFilmAjax(film)
+    }
+    function doUpdate(){
+        var film = getFilmFromForm();
+        var rowElement = document.getElementById(film.ID);
+        updateFilmAjax(film);
+        setFilmInRow(rowElement,film);
+       
+        clearForm();
+        showViewAll();
+    }
+    function doDelete(r){
+        var tableElement = document.getElementById('filmTable');
+        var rowElement = r.parentNode.parentNode;
+        var index = rowElement.rowIndex;
+        deleteFilmAjax(rowElement.getAttribute("ID"));
+        tableElement.deleteRow(index);
+    }
+    function addFilmToTable(film){
+        var tableElement = document.getElementById('filmTable')
+        var rowElement = tableElement.insertRow(-1)
+        rowElement.setAttribute('ID',film.ID)
+        var cell1 = rowElement.insertCell(0);
+        cell1.innerHTML = film.ID
+        var cell2 = rowElement.insertCell(1);
+        cell2.innerHTML = film.Title
+        var cell3 = rowElement.insertCell(2);
+        cell3.innerHTML = film.Rating
+        var cell4 = rowElement.insertCell(3);
+        cell4.innerHTML = film.Director
+        var cell5 = rowElement.insertCell(4);
+        cell5.innerHTML = film.Votes
+        var cell6 = rowElement.insertCell(5);
+        cell6.innerHTML = '<button onclick="showUpdate(this)">Update</button>'
+        var cell7 = rowElement.insertCell(6);
+        cell7.innerHTML = '<button onclick=doDelete(this)>Delete</button>'
+
+    }
+
+    function clearForm(){
+        var form = document.getElementById('createUpdateForm')
+
+        form.querySelector('input[name="Title"]').value  =''
+        form.querySelector('input[name="Rating"]').value=''
+        form.querySelector('input[name="Director"]').value=''
+        form.querySelector('input[name="Votes"]').value=''
+    }
+    function getFilmFromRow(rowElement){
+        var film ={}
+        film.ID = rowElement.getAttribute('ID')
+        //film.ID = parseInt(rowElement.cells[0].firstChild.textContent,10)
+        film.Title = rowElement.cells[1].firstChild.textContent
+        film.Rating = parseInt(rowElement.cells[2].firstChild.textContent,10)
+        film.Director = rowElement.cells[3].firstChild.textContent
+        film.Votes = parseInt(rowElement.cells[4].firstChild.textContent,10)
+        return film
+    }
+    function setFilmInRow(rowElement, film){
+        rowElement.cells[0].firstChild.textContent= film.ID  
+        rowElement.cells[1].firstChild.textContent= film.Title 
+        rowElement.cells[2].firstChild.textContent= film.Rating
+        rowElement.cells[3].firstChild.textContent= film.Director
+        rowElement.cells[4].firstChild.textContent= film.Votes
+    }
+    function populateFormWithFilm(film){
+        var form = document.getElementById('createUpdateForm')
+        form.querySelector('input[name="ID"]').disabled = true
+
+        form.querySelector('input[name="ID"]').value  = film.ID
+        form.querySelector('input[name="Title"]').value  = film.Title
+        form.querySelector('input[name="Rating"]').value = film.Rating
+        form.querySelector('input[name="Director"]').value = film.Director
+        form.querySelector('input[name="Votes"]').value = film.Votes
+        return film
+    }
+    function getFilmFromForm(){
+        var form = document.getElementById('createUpdateForm')
+        var film = {}
+        film.ID = parseInt(form.querySelector('input[name="ID"]').value,10)
+        film.Title = form.querySelector('input[name="Title"]').value
+        film.Rating = parseInt(form.querySelector('input[name="Rating"]').value,10)
+        film.Director = form.querySelector('input[name="Director"]').value
+        film.Votes = parseInt(form.querySelector('input[name="Votes"]').value,10)
+        console.log(JSON.stringify(film))
+        return film
+    }
+    function getAllAjax(){
+        $.ajax({
+            "url": "http://127.0.0.1:5000/films",
+            "method":"GET",
+            "data":"",
+            "dataType": "JSON",
+            "success":function(result){
+                //console.log(result);
+                for (film of result){
+                    addFilmToTable(film)
+                }             
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+
+    }
+    function createFilmAjax(film){
+        console.log(JSON.stringify(film));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/films",
+            "method":"POST",
+            "data":JSON.stringify(film),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                film.ID = result.ID
+                addFilmToTable(film)
+                clearForm()
+                showViewAll()
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+    function updateFilmAjax(film){
+        console.log(JSON.stringify(film));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/films/"+encodeURI(film.ID),
+            "method":"PUT",
+            "data":JSON.stringify(film),
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+    function deleteFilmAjax(ID){
+        //console.log(JSON.stringify('Deleting ' + ID));
+        $.ajax({
+            "url": "http://127.0.0.1:5000/films/"+encodeURI(ID),
+            "method":"DELETE",
+            "data":"",
+            "dataType": "JSON",
+            contentType: "application/json; charset=utf-8",
+            "success":function(result){
+                //console.log(result);
+                  
+            },
+            "error":function(xhr,status,error){
+                console.log("error: "+status+" msg:"+error);
+            }
+        });
+    }
+    getAllAjax();
+  
+
+    
+    </script>
+</html>

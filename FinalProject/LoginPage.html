@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+
+<link rel="stylesheet" href="design2.css"></style>
+
+</head>
+<body>
+	
+	<form id="login">
+		<div class="form">
+		<div class="login">
+		
+			<h1>Film Viewer<h1>
+			
+			<fieldset>
+				<legend> Login </legend>
+				
+				<p><input type="email" id="email" name="email" placeholder="Email" required /></>
+
+				<p><input type="password" id="pwd" name="pwd" placeholder="Password" required /></p>
+				
+				<p><input type="button" value="Login" onclick="validate()"/></p>
+			</fieldset>
+		</div>
+		</div>
+	</form>		
+	
+</body>
+
+<html>
+
+<script>
+
+	//Function to execute when submit is clicked
+	function validate(){ 
+		var email = document.getElementById("email").value;
+		var password = document.getElementById("pwd").value;
+		
+		
+		//Validates credentials against those stored
+		if ( email == "Andrew" && password == "Password01!"){
+			alert("Login Successful")
+			
+		window.location.replace("IndexPage.html");
+		return false;
+	}
+	
+		//returns login failed if credentials don't match
+		else if ( email != "Andrew" || pwd != "Password01"){
+			alert("Login Failed");
+		return false;
+
+	}
+	}
+
+</script>
