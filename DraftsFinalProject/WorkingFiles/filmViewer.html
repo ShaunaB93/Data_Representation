@@ -1,27 +1,15 @@
 <html>
     <head>
-        <title> Film Viewer </title>
+        <title> View Films</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
        
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-        <style>
-        body {
-			height:100%; 
-			background: linear-gradient(to bottom, #00dbde 0%, #fc00ff 100%);
-		}
-
-        </style>
     </head>
     <body>
-        <div class="title text-center"> 
-        <h1>Film Viewer</h1>
-        </div>
-    </br>
-        <div class="text-center"> <button id="showCreateButton" onclick="showCreate()" class="btn btn-dark text-center">Create</button></div>
-    </br>
+        <h1>Films</h1>
+        <div> <button id="showCreateButton" onclick="showCreate()">Create</button></div>
         <div>
-            <table class="table table-striped table-dark table-bordered" id="filmTable">
+            <table class="table" id="filmTable">
                 <tr>
                         <th>ID</th>
                         <th>Title</th>
@@ -37,23 +25,13 @@
         <div id='createUpdateForm' style="display: none">
                 <h2><span id="createLabel">Create a</span> <span id="updateLabel">update</span> Film</h2>
                 <input type="hidden" name="ID"/>
-                Title <input type="text" name="Title" class="form-control form-control-lg form-control-sm"/>  <br/>
-                Rating <input type="number" name="Rating" class="form-control form-control-lg form-control-sm"/> <br/>
-                Director <input type="text" name="Director" class="form-control form-control-lg form-control-sm"/> <br/>
-                Votes <input type="number" name="Votes" class="form-control form-control-lg form-control-sm"/> <br/>
-                <span><button id="doCreateButton" onclick="doCreate()" class="btn btn-dark text-center">Create</button></span>
-                <span><button id="doUpdateButton" onclick="doUpdate()" class="btn btn-dark text-center">Update</button></span>
+                Title <input type="text" name="Title"/>  <br/>
+                Rating <input type="number" name="Rating"/> <br/>
+                Director <input type="text" name="Director"/> <br/>
+                Votes <input type="number" name="Votes"/> <br/>
+                <span><button id="doCreateButton" onclick="doCreate()">Create</button></span>
+                <span><button id="doUpdateButton" onclick="doUpdate()">Update</button></span>
         </div>
-
-        <div class="text-center"> 
-            <br> 
-			<input type="button" name="indexPage" value="Move to Index Page" onclick="window.location.href='IndexPage.html'" class="btn btn-dark text-center"/>
-			<div>
-			
-			</br> 
-			<input type="button" name="loginPage" value="Back to Login Page" onclick="window.location.href='LoginPage.html'" class="btn btn-dark text-center"/>
-			<div>
-		</div>
     </body>
     <script>
     function showCreate(){
@@ -69,8 +47,8 @@
 
     }
     function showViewAll(){
-        document.getElementById('showCreateButton').style.display="initial"
-        document.getElementById('filmTable').style.display="table"
+        document.getElementById('showCreateButton').style.display="block"
+        document.getElementById('filmTable').style.display="block"
         document.getElementById('createUpdateForm').style.display="none"
     }
     function showUpdate(buttonElement){

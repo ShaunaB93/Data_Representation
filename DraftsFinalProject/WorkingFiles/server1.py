@@ -1,12 +1,31 @@
-from flask import Flask, jsonify, request, abort, session
+from flask import Flask, jsonify, request, abort
 from filmDAO import filmDAO
-
-from flask import render_template, redirect, url_for
-
 
 app = Flask(__name__, static_url_path='', static_folder='.')
 
+#films=[{
+#    "ID":1,
+#    "Title":"Harry Potter",
+#    "Rating":10,
+#    "Director":"David Yates",
+#    "Votes":0
+#},
+#{
+#    "ID":2,
+#    "Title":"The Avengers",
+#    "Rating":9,
+#    "Director":"Joss Whedon",
+#    "Votes":0
+#},
+#{
+#    "ID":3,
+#    "Title":"Superman Returns",
+#    "Rating":5,
+#    "Director":"Bryan Singer",
+#    "Votes":0
+#}]
 
+#nextID=4
 
 @app.route('/films')
 def getAll():
@@ -16,6 +35,11 @@ def getAll():
 
 @app.route('/films/<int:id>')
 def findID(id):
+    #filmCheck = list(filter(lambda f: f['ID']==id, films))
+    #if len(filmCheck)==0:
+    #    abort(404)
+        #return jsonify({}), 204
+    #return jsonify(filmCheck[0])
     foundFilm = filmDAO.findByID(id)
     return jsonify(foundFilm)
 
@@ -26,14 +50,16 @@ def createFilm():
     global nextID
     if not request.json:
         abort(400)
-
+    #Check that properly formatted add code here
     film={
         #"ID":nextID,
         "Title": request.json['Title'],
         "Rating": request.json['Rating'],
         "Director": request.json['Director'],
-        "Votes": request.json['Votes']
+        "Votes": 0
     }
+    #nextID += 1
+    #films.append(film)
     
     filmValue = (film['Title'], film['Rating'], film['Director'], film['Votes'])
     updatedID = filmDAO.create(filmValue)
@@ -47,6 +73,10 @@ def updateFilm(id):
     changeFilm = filmDAO.findByID(id)
     if not changeFilm:
         abort(404)
+    
+    #if (len(changeFilm) ==0):
+        #abort(404)
+    #changeFilm = changeFilm[0]
     
     if not request.json:
         abort(400)
@@ -83,24 +113,26 @@ def deleteFilm(id):
     filmDAO.delete(id)
     return jsonify({"done":True})
 
-@app.route('/votes/<int:id>', methods=['PUT'])
+    #deleteFilm = list(filter(lambda f: f['ID']==id, films))
+    #if (len(deleteFilm) ==0):
+    #    abort(404)
+    #films.remove(deleteFilm[0])
+    #return jsonify({"done":True})
+
+@app.route('/votes/<int:id>', methods=['POST'])
 def addVote(id):
-    voteAdd = filmDAO.addVote(id)
-    if not changeFilm:
+    foundFilm = list(filter(lambda f: f['ID']==id, films))
+    if len(foundFilm)==0:
         abort(404)
     if not request.json:
         abort(400)
-    requestJson = request.json
+    if not 'Votes' in request.json or type(request.json['Votes']) is not int:
+        abort(401)
+    updatedVote = request.json['Votes']
 
-    if 'Votes' in requestJson and type(requestJson['Votes']) is not int:
-        abort(400)
-
-    if 'Votes' in requestJson:
-        voteAdd['Votes'] = requestJson['Votes']
+    foundFilm[0]['Votes'] += updatedVote
     
-    voteID = (voteAdded['ID'])
-    filmDAO.addVote(voteAdd)
-    return jsonify(voteAdd)
+    return jsonify(foundFilm[0])
 
 @app.route('/votes/leaderboard')
 def getLeaderBoard():

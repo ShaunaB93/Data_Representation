@@ -44,10 +44,9 @@ class FilmDAO:
 
     def update(self, values):
         cursor = self.db.cursor()
-        sql="update film set Title= %s, Rating=%s, Director=%s, Votes=%s  where ID = %s order by Votes"
+        sql="update film set Title= %s, Rating=%s, Director=%s, Votes=%s  where ID = %s"
         cursor.execute(sql, values)
         self.db.commit()
-    
     def delete(self, id):
         cursor = self.db.cursor()
         sql="delete from film where ID = %s"
@@ -69,11 +68,6 @@ class FilmDAO:
         
         return item
     
-    def addVote(self, id):
-        cursor = self.db.cursor()
-        sql="update film set Votes = Votes+1 where id=%s;"
-        cursor.execute(sql, id)
-        self.db.commit()
 
 
 filmDAO = FilmDAO()
